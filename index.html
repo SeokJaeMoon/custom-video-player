@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="HTML5, CSS3, Vanilla JavaScript로 제작한 커스텀 비디오 플레이어">
+  <title>Custom Video Player | HTML5 실습</title>
+  <link rel="stylesheet" href="./style.css">
+  <script src="./script.js" defer></script>
+</head>
+<body>
+  <div class="page">
+    <header class="site-header">
+      <a class="brand" href="./index.html" aria-label="비디오 플레이어 처음으로">
+        <span class="brand-mark">▶</span>
+        <span>VIDEO<span class="brand-accent">LAB</span></span>
+      </a>
+      <span class="header-note">HTML5 · CSS3 · VANILLA JS</span>
+    </header>
+
+    <main>
+      <section class="intro" aria-labelledby="page-title">
+        <div class="eyebrow"><span class="live-dot"></span> INTERACTIVE MEDIA EXPERIENCE</div>
+        <h1 id="page-title">영상 컨트롤,<br><span>직접 디자인하다.</span></h1>
+        <p class="intro-text">
+          브라우저 기본 플레이어 대신 직접 만든 인터페이스로
+          재생, 볼륨, 구간 이동을 제어하는 HTML5 실습입니다.
+        </p>
+      </section>
+
+      <section class="workspace" aria-label="커스텀 비디오 플레이어">
+        <div class="workspace-top">
+          <div class="file-info">
+            <span class="file-symbol" aria-hidden="true">▣</span>
+            <div>
+              <strong id="video-title">Motion Study — Sample Video</strong>
+              <span class="file-subtitle" id="file-hint">기본 제공 데모 영상</span>
+            </div>
+          </div>
+          <div class="workspace-actions">
+            <span class="state-chip" id="playback-status" role="status" aria-live="polite">준비 중</span>
+            <label for="video-file" class="file-button" title="컴퓨터에서 동영상 선택">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4m0 0L7 9m5-5 5 5M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>
+              내 영상 열기
+            </label>
+            <input id="video-file" class="visually-hidden" type="file" accept="video/*,.mp4,.webm,.ogg">
+          </div>
+        </div>
+
+        <div class="player" id="player" tabindex="0" aria-label="동영상 플레이어. 스페이스바 재생 및 일시정지, 좌우 방향키 5초 이동, M 키 음소거">
+          <div class="video-stage">
+            <!-- controls 속성을 넣지 않으면 기본 브라우저 컨트롤이 표시되지 않는다. -->
+            <video id="video" src="./media/demo.mp4" preload="metadata" playsinline aria-label="실습용 샘플 영상">
+              브라우저가 HTML5 비디오를 지원하지 않습니다.
+            </video>
+            <div class="video-shade" aria-hidden="true"></div>
+            <div class="corner-tag" aria-hidden="true">HTML5 PLAYER / 001</div>
+            <button class="big-play" id="big-play" type="button" aria-label="영상 재생">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 10 7-10 7V5Z"/></svg>
+            </button>
+            <div class="buffer-spinner" aria-hidden="true"></div>
+          </div>
+
+          <div class="controls">
+            <div class="timeline">
+              <span id="current-time" class="time">00:00</span>
+              <input
+                id="seek" class="range seek-range" type="range"
+                min="0" max="1000" step="1" value="0"
+                style="--fill: 0%;" aria-label="영상 재생 위치" disabled
+              >
+              <span id="duration" class="time">00:00</span>
+            </div>
+
+            <div class="controls-bottom">
+              <div class="controls-group">
+                <button id="play" class="icon-button main-play" type="button" aria-label="재생" title="재생 / 일시정지 (Space)">
+                  <svg id="play-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 10 7-10 7V5Z"/></svg>
+                </button>
+                <span class="control-separator" aria-hidden="true"></span>
+                <button id="mute" class="icon-button" type="button" aria-label="음소거" title="음소거 (M)">
+                  <svg id="volume-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6.5 9H3v6h3.5l4.5 4V5ZM15 9a4 4 0 0 1 0 6m3-9a8 8 0 0 1 0 12"/></svg>
+                </button>
+                <input id="volume" class="range volume-range" type="range" min="0" max="1" step="0.01" value="1" style="--fill: 100%;" aria-label="볼륨">
+                <span class="volume-label" id="volume-label">100%</span>
+              </div>
+
+              <div class="controls-group controls-right">
+                <button id="speed" class="speed-button" type="button" aria-label="재생 속도 변경" title="재생 속도 변경">1×</button>
+                <button id="fullscreen" class="icon-button" type="button" aria-label="전체 화면" title="전체 화면">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H4a1 1 0 0 0-1 1v4m13-5h4a1 1 0 0 1 1 1v4M3 16v4a1 1 0 0 0 1 1h4m13-5v4a1 1 0 0 1-1 1h-4"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p class="help-text">
+          <span>단축키</span> Space 재생·일시정지 <i></i> ← / → 5초 이동 <i></i> M 음소거
+          <span class="help-right">파일 선택은 현재 브라우저에서만 적용됩니다.</span>
+        </p>
+      </section>
+
+      <div class="features" aria-label="구현 핵심 기능">
+        <div class="feature"><span class="feature-number">01</span><strong>직접 만든 컨트롤</strong><span>HTML5 Media API</span></div>
+        <div class="feature"><span class="feature-number">02</span><strong>정밀한 구간 탐색</strong><span>currentTime · Seeking</span></div>
+        <div class="feature"><span class="feature-number">03</span><strong>부드러운 상태 동기화</strong><span>requestAnimationFrame</span></div>
+      </div>
+    </main>
+    <footer class="footer">VIDEO LAB <span>·</span> No frameworks. Just the web.</footer>
+  </div>
+</body>
+</html>
